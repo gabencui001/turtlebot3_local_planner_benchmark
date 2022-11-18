@@ -1,0 +1,4 @@
+global_planner:
+
+# Djikstra: default true
+  use_dijkstra: false

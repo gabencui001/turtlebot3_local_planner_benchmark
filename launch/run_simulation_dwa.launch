@@ -1,0 +1,76 @@
+<!-- 
+
+Usage: roslaunch turtlebot3_local_planner_sim run_simulation_<desired local planner>.launch scenario:=<desired_scenario>
+Coords.txt is generated in ./.ros/ directory.
+
+Known bug: if robot is not moving try to launch simulation again.
+
+ -->
+
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="scenario" default="Static" doc="scenario type [Static, Dynamic_simple, Dynamic_complex]"/>
+  <arg name="world" default="$(find turtlebot3_local_planner_sim)/worlds/$(arg scenario)/world.model"/>
+
+<!-- Static Scenario position init -->
+  <arg name="x_pos_init" default="13.0" unless="$(eval scenario != 'Static')"/>
+  <arg name="y_pos_init" default="-2.0" unless="$(eval scenario != 'Static')"/>
+  <arg name="z_pos_init" default="0.0" unless="$(eval scenario != 'Static')"/>
+  <arg name="x_pos_nav" default="-4.0" unless="$(eval scenario != 'Static')"/>
+  <arg name="y_pos_nav" default="-2.0" unless="$(eval scenario != 'Static')"/>
+
+ <!-- Dynamic_simple Scenario position init -->
+  <arg name="x_pos_init" default="-4.0" unless="$(eval scenario != 'Dynamic_simple')"/>
+  <arg name="y_pos_init" default="0.0" unless="$(eval scenario != 'Dynamic_simple')"/>
+  <arg name="z_pos_init" default="0.0" unless="$(eval scenario != 'Dynamic_simple')"/>
+  <arg name="x_pos_nav" default="1.0" unless="$(eval scenario != 'Dynamic_simple')"/>
+  <arg name="y_pos_nav" default="0.0" unless="$(eval scenario != 'Dynamic_simple')"/> 
+
+<!-- Dynamic_complex Scenario position init -->
+  <arg name="x_pos_init" default="13.5" unless="$(eval scenario != 'Dynamic_complex')"/>
+  <arg name="y_pos_init" default="0.0" unless="$(eval scenario != 'Dynamic_complex')"/>
+  <arg name="z_pos_init" default="0.0" unless="$(eval scenario != 'Dynamic_complex')"/>
+  <arg name="x_pos_nav" default="-12.0" unless="$(eval scenario != 'Dynamic_complex')"/>
+  <arg name="y_pos_nav" default="0.0" unless="$(eval scenario != 'Dynamic_complex')"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world)"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  
+<!-- "Simulation node executed" -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3 -x $(arg x_pos_init) -y $(arg y_pos_init) -z $(arg z_pos_init) -param robot_description" />
+
+<!-- Sleep 3 "Laser scan node executed" -->
+  <arg name="sim_node_start_delay" default="3.0" />  
+
+  <node name="scan_to_scan_filter_chain" pkg="laser_filters" type="scan_to_scan_filter_chain" launch-prefix="bash -c 'sleep $(arg sim_node_start_delay); $0 $@' ">
+    <rosparam file="$(find turtlebot3_local_planner_sim)/param/my_laser_config.yaml" command="load"/>
+  </node>
+
+<!-- Sleep 1 "Navigation node executed" -->
+  <include file="$(find turtlebot3_local_planner_sim)/launch/turtlebot3_navigation.launch" >
+    <arg name="pose_x" value="$(arg x_pos_init)" />
+    <arg name="pose_y" value="$(arg y_pos_init)" />
+    <arg name="map_file" value="$(find turtlebot3_local_planner_sim)/worlds/$(arg scenario)/map/map.yaml" />
+  </include>
+
+<!-- Sleep 1 "Debug service is running" -->
+  <arg name="deb_node_start_delay" default="1.0" />
+
+  <node name="simulation_sv" pkg="turtlebot3_local_planner_sim" type="simulation_sv" launch-prefix="bash -c 'sleep $(arg deb_node_start_delay); $0 $@' "/>
+
+<!-- Sleep 1 "Goal Pub executed" -->
+  <arg name="goal_pub_node_start_delay" default="1.0" />
+
+  <node name="goal_publisher" pkg="turtlebot3_local_planner_sim" type="goal_publisher" launch-prefix="bash -c 'sleep $(arg goal_pub_node_start_delay); $0 $@' ">
+    <param name="x" value="$(arg x_pos_nav)" />
+    <param name="y" value="$(arg y_pos_nav)" />
+  </node>
+</launch>
