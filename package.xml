@@ -5,10 +5,7 @@
   <description>The turtlebot3_local_planner_sim package</description>
   <maintainer email="pm4u19@soton.ac.uk">Piotr Mikulowski</maintainer>
 
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>MIT</license>
+  <license>BSD</license>
 
   <author email="pm4u19@soton.ac.uk">Piotr Mikulowski</author>
 
@@ -18,15 +15,32 @@
   <build_depend>move_base_msgs</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>roscpp</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>turtlebot3_bringup</build_depend>
+  <build_depend>map_server</build_depend>
+  <build_depend>rviz</build_depend>
+  <build_depend>move_base</build_depend>
+  <build_depend>laser_filters</build_depend>
   <build_export_depend>actionlib_msgs</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>move_base_msgs</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>gazebo_ros</build_export_depend>
+  <build_export_depend>turtlebot3_bringup</build_export_depend>
+  <build_export_depend>map_server</build_export_depend>
+  <build_export_depend>rviz</build_export_depend>
+  <build_export_depend>move_base</build_export_depend>
+  <build_export_depend>laser_filters</build_export_depend>
   <exec_depend>actionlib_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>move_base_msgs</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
-
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>turtlebot3_bringup</exec_depend>
+  <exec_depend>map_server</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>laser_filters</exec_depend>
 </package>
