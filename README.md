@@ -75,3 +75,9 @@ Three scenarios are supported:
 
 Note: 
 - Letter case matters when specifying scenario name in the run command
+
+Dwa init             |  Dwa just before collision
+:-------------------------:|:-------------------------:
+![halo](/img/rviz/dwa_dynamic_simple00.png)  |  ![](/img/rviz/dwa_dynamic_simple01.png)
+Teb init             |  Teb avoiding dynamic obstacle
+![](/img/rviz/teb_dynamic_simple00.png)  |  ![](/img/rviz/teb_dynamic_simple_01.png)
