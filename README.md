@@ -62,8 +62,9 @@ catkin_make
 
 in ~/.bashrc
 ```
-export TURTLEBOT3_MODEL=waffle_pi
-export GAZEBO_PLUGIN_PATH=~/catkin_ws/src/turtlebot3_local_planner_benchmark/plugins
+echo "export TURTLEBOT3_MODEL=waffle_pi" >> ~/.bashrc
+echo "export GAZEBO_PLUGIN_PATH=~/catkin_ws/src/turtlebot3_local_planner_benchmark/plugins" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 # Run the simulation
