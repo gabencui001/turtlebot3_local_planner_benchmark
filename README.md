@@ -18,10 +18,12 @@ sudo apt update
 sudo apt install ros-noetic-desktop-full
 ```
 
-#### Configure ~/.bashrc
+#### Source setup.bash
 
-`source /opt/ros/noetic/setup.bash`
-
+```
+echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
 #### Init rosdep
 ```
 sudo apt install python3-rosdep
@@ -44,10 +46,13 @@ catkin_make
 cd ~/catkin_ws/src
 git clone https://github.com/rureverek/turtlebot3_local_planner_benchmark.git
 ```
-### Install dependencies
-
-`rosdep install turtlebot3_local_planner_sim`
-
+### Source workspace and Install dependencies
+```
+cd ~/catkin_ws
+echo "source $(pwd)/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+rosdep install turtlebot3_local_planner_sim
+```
 ### Build package
 ```
 cd ~/catkin_ws
@@ -57,8 +62,9 @@ catkin_make
 
 in ~/.bashrc
 ```
-export TURTLEBOT3_MODEL=waffle_pi
-export GAZEBO_PLUGIN_PATH=~/catkin_ws/src/turtlebot3_local_planner_benchmark/plugins
+echo "export TURTLEBOT3_MODEL=waffle_pi" >> ~/.bashrc
+echo "export GAZEBO_PLUGIN_PATH=~/catkin_ws/src/turtlebot3_local_planner_benchmark/plugins" >> ~/.bashrc
+source ~/.bashrc
 ```
 
 # Run the simulation
